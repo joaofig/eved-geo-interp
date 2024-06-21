@@ -198,6 +198,8 @@ pexpect==4.9.0
     # via ipython
 platformdirs==4.2.2
     # via jupyter-core
+polars==0.20.31
+    # via -r requirements/run.in
 prometheus-client==0.20.0
     # via jupyter-server
 prompt-toolkit==3.0.46
