@@ -1,5 +1,8 @@
 jupyter
 jupyterlab
+folium
+numba
 numpy
 pandas
-polars
+polars[numpy, pandas]
+timezonefinder

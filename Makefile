@@ -14,6 +14,9 @@ uninstall:
 compile:
 	$(UV) pip compile requirements/run.in -o requirements/run.txt
 
+upgrade:
+	$(UV) pip compile --upgrade requirements/run.in -o requirements/run.txt
+
 sync:
 	$(UV) pip sync requirements/run.txt
 
