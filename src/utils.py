@@ -9,23 +9,32 @@ from src.openmeteo import get_hist_temp
 
 
 def get_temp_locations(files: str = "data/eVED/*.csv") -> np.ndarray:
-    lf = (pl.scan_csv(files)
-          .select([pl.col("Matchted Latitude[deg]").alias("lat"),
-                   pl.col("Matched Longitude[deg]").alias("lon")]))
-    loc_max = lf.max().collect().to_numpy()[0]
-    loc_min = lf.min().collect().to_numpy()[0]
-    loc_mid = (loc_min + loc_max) / 2
-    locations = np.array([
-        (loc_min[0], loc_min[1]),
-        (loc_min[0], loc_mid[1]),
-        (loc_min[0], loc_max[1]),
-        (loc_mid[0], loc_min[1]),
-        (loc_mid[0], loc_mid[1]),
-        (loc_mid[0], loc_max[1]),
-        (loc_max[0], loc_min[1]),
-        (loc_max[0], loc_mid[1]),
-        (loc_max[0], loc_max[1])
-    ])
+    if os.path.isfile("data/locations.csv"):
+        df = pl.read_csv("data/locations.csv")
+        locations = df.to_numpy()
+    else:
+        lf = (pl.scan_csv(files)
+              .select([pl.col("Matchted Latitude[deg]").alias("lat"),
+                       pl.col("Matched Longitude[deg]").alias("lon")]))
+        loc_max = lf.max().collect().to_numpy()[0]
+        loc_min = lf.min().collect().to_numpy()[0]
+        loc_mid = (loc_min + loc_max) / 2
+        locations = np.array([
+            (loc_min[0], loc_min[1]),
+            (loc_min[0], loc_mid[1]),
+            (loc_min[0], loc_max[1]),
+            (loc_mid[0], loc_min[1]),
+            (loc_mid[0], loc_mid[1]),
+            (loc_mid[0], loc_max[1]),
+            (loc_max[0], loc_min[1]),
+            (loc_max[0], loc_mid[1]),
+            (loc_max[0], loc_max[1])
+        ])
+        df = pl.DataFrame([
+            pl.Series(name="lat", values=locations[:, 0]),
+            pl.Series(name="lon", values=locations[:, 1]),
+        ])
+        df.write_csv("data/locations.csv")
     return locations
 
 
