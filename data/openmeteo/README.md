@@ -1,0 +1,1 @@
+This folder contains the year-long temperature data sources.
