@@ -54,3 +54,7 @@ This script generates temperature interpolations by varying the IDW power parame
 ## Updating Temperatures
 The final script computes the temperature interpolation using the optimum power parameter for the whole dataset.
 This script creates new versions of the original input files in the output data folder.
+
+```shell
+python update-temperatures.py
+```
