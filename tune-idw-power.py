@@ -12,6 +12,10 @@ def main():
     base_dt = datetime(year=2017, month=11, day=1, tzinfo=timezone("America/Detroit"))
     temp_df = pl.read_csv("data/temperatures.csv")
 
+    diff_arr = temp_df.select(pl.col("Temp[DegC]", "OAT[DegC]")).to_numpy()
+    rmse = float(np.sqrt(np.mean((diff_arr[:, 0] - diff_arr[:, 1]) ** 2)))
+    print(f"OAT RMSE: {rmse}")
+
     rmse_arr = np.zeros(10, dtype=float)
 
     for power in range(1, 11):
